@@ -4,6 +4,7 @@ import com.govind.worksphere.dto.EmployeeRequestDTO;
 import com.govind.worksphere.dto.EmployeeResponseDTO;
 import com.govind.worksphere.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class EmployeeController {
     // Create Employee
     @PostMapping
     public EmployeeResponseDTO saveEmployee(
-            @RequestBody EmployeeRequestDTO employeeRequestDTO) {
+            @Valid @RequestBody EmployeeRequestDTO employeeRequestDTO) {
 
         return employeeService.saveEmployee(employeeRequestDTO);
     }
@@ -43,7 +44,7 @@ public class EmployeeController {
     @PutMapping("/{id}")
     public EmployeeResponseDTO updateEmployee(
             @PathVariable Long id,
-            @RequestBody EmployeeRequestDTO employeeRequestDTO) {
+            @Valid @RequestBody EmployeeRequestDTO employeeRequestDTO) {
 
         return employeeService.updateEmployee(id, employeeRequestDTO);
     }
