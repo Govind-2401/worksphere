@@ -5,6 +5,7 @@ import com.govind.worksphere.dto.EmployeeResponseDTO;
 import com.govind.worksphere.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -28,9 +29,23 @@ public class EmployeeController {
 
     // Get All Employees
     @GetMapping
-    public List<EmployeeResponseDTO> getAllEmployees() {
+    public Page<EmployeeResponseDTO> getAllEmployees(
 
-        return employeeService.getAllEmployees();
+            @RequestParam(defaultValue = "0") int page,
+
+            @RequestParam(defaultValue = "5") int size,
+
+            @RequestParam(defaultValue = "id") String sortBy,
+
+            @RequestParam(defaultValue = "asc") String sortDir
+    ) {
+
+        return employeeService.getAllEmployees(
+                page,
+                size,
+                sortBy,
+                sortDir
+        );
     }
 
     // Get Employee By ID

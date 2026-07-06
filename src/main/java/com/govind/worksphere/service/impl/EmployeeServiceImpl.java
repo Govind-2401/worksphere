@@ -8,6 +8,10 @@ import com.govind.worksphere.mapper.EmployeeMapper;
 import com.govind.worksphere.repository.EmployeeRepository;
 import com.govind.worksphere.service.EmployeeService;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -31,12 +35,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeResponseDTO> getAllEmployees() {
+    public Page<EmployeeResponseDTO> getAllEmployees(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir) {
 
-        return employeeRepository.findAll()
-                .stream()
-                .map(EmployeeMapper::toResponseDTO)
-                .toList();
+        Sort sort = sortDir.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return employeeRepository.findAll(pageable)
+                .map(EmployeeMapper::toResponseDTO);
     }
 
     @Override
