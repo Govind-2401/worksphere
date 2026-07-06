@@ -31,4 +31,22 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + id));
     }
+
+    @Override
+    public Employee updateEmployee(Long id, Employee employee) {
+
+        Employee existingEmployee = employeeRepository.findById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + id));
+
+        existingEmployee.setEmployeeCode(employee.getEmployeeCode());
+        existingEmployee.setFirstName(employee.getFirstName());
+        existingEmployee.setLastName(employee.getLastName());
+        existingEmployee.setEmail(employee.getEmail());
+        existingEmployee.setPhone(employee.getPhone());
+        existingEmployee.setGender(employee.getGender());
+        existingEmployee.setJoiningDate(employee.getJoiningDate());
+        existingEmployee.setEmploymentStatus(employee.getEmploymentStatus());
+
+        return employeeRepository.save(existingEmployee);
+    }
 }
