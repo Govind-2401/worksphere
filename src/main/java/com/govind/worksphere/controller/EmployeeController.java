@@ -1,8 +1,10 @@
 package com.govind.worksphere.controller;
 
-import com.govind.worksphere.entity.Employee;
+import com.govind.worksphere.dto.EmployeeRequestDTO;
+import com.govind.worksphere.dto.EmployeeResponseDTO;
 import com.govind.worksphere.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -15,28 +17,38 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    // Create Employee
     @PostMapping
-    public Employee saveEmployee(@RequestBody Employee employee) {
-        return employeeService.saveEmployee(employee);
+    public EmployeeResponseDTO saveEmployee(
+            @RequestBody EmployeeRequestDTO employeeRequestDTO) {
+
+        return employeeService.saveEmployee(employeeRequestDTO);
     }
 
+    // Get All Employees
     @GetMapping
-    public List<Employee> getAllEmployees() {
+    public List<EmployeeResponseDTO> getAllEmployees() {
+
         return employeeService.getAllEmployees();
     }
 
+    // Get Employee By ID
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable Long id) {
+    public EmployeeResponseDTO getEmployeeById(@PathVariable Long id) {
+
         return employeeService.getEmployeeById(id);
     }
 
+    // Update Employee
     @PutMapping("/{id}")
-    public Employee updateEmployee(@PathVariable Long id,
-                                   @RequestBody Employee employee) {
+    public EmployeeResponseDTO updateEmployee(
+            @PathVariable Long id,
+            @RequestBody EmployeeRequestDTO employeeRequestDTO) {
 
-        return employeeService.updateEmployee(id, employee);
+        return employeeService.updateEmployee(id, employeeRequestDTO);
     }
 
+    // Delete Employee
     @DeleteMapping("/{id}")
     public String deleteEmployee(@PathVariable Long id) {
 

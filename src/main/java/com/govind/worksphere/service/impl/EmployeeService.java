@@ -1,18 +1,19 @@
 package com.govind.worksphere.service;
 
-import com.govind.worksphere.entity.Employee;
+import com.govind.worksphere.dto.EmployeeRequestDTO;
+import com.govind.worksphere.dto.EmployeeResponseDTO;
+
 import java.util.List;
 
 public interface EmployeeService {
 
-    Employee saveEmployee(Employee employee);
+    EmployeeResponseDTO saveEmployee(EmployeeRequestDTO employeeRequestDTO);
 
-    List<Employee> getAllEmployees();
+    List<EmployeeResponseDTO> getAllEmployees();
 
-    Employee getEmployeeById(Long id);
+    EmployeeResponseDTO getEmployeeById(Long id);
 
-    Employee updateEmployee(Long id, Employee employee);
+    EmployeeResponseDTO updateEmployee(Long id, EmployeeRequestDTO employeeRequestDTO);
 
     void deleteEmployee(Long id);
-
 }
