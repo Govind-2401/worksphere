@@ -19,7 +19,6 @@ public class EmployeeMapper {
         employee.setGender(dto.getGender());
         employee.setJoiningDate(dto.getJoiningDate());
         employee.setEmploymentStatus(dto.getEmploymentStatus());
-        employee.setDepartment(dto.getDepartment());
 
         return employee;
     }
@@ -37,7 +36,16 @@ public class EmployeeMapper {
                 .gender(employee.getGender())
                 .joiningDate(employee.getJoiningDate())
                 .employmentStatus(employee.getEmploymentStatus())
-                .department(employee.getDepartment())
+                .departmentId(
+                        employee.getDepartment() != null
+                                ? employee.getDepartment().getId()
+                                : null
+                )
+                .departmentName(
+                        employee.getDepartment() != null
+                                ? employee.getDepartment().getDepartmentName()
+                                : null
+                )
                 .build();
     }
 }

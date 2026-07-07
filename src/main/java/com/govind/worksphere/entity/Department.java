@@ -3,6 +3,9 @@ package com.govind.worksphere.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,4 +27,12 @@ public class Department {
     private String departmentName;
 
     private String description;
+
+    @OneToMany(
+            mappedBy = "department",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Employee> employees = new ArrayList<>();
+
 }

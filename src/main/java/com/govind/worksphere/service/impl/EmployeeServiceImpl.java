@@ -2,10 +2,13 @@ package com.govind.worksphere.service.impl;
 
 import com.govind.worksphere.dto.EmployeeRequestDTO;
 import com.govind.worksphere.dto.EmployeeResponseDTO;
+import com.govind.worksphere.entity.Department;
 import com.govind.worksphere.entity.Employee;
+import com.govind.worksphere.exception.DepartmentNotFoundException;
 import com.govind.worksphere.exception.DuplicateResourceException;
 import com.govind.worksphere.exception.EmployeeNotFoundException;
 import com.govind.worksphere.mapper.EmployeeMapper;
+import com.govind.worksphere.repository.DepartmentRepository;
 import com.govind.worksphere.repository.EmployeeRepository;
 import com.govind.worksphere.service.EmployeeService;
 import org.springframework.data.domain.*;
@@ -17,9 +20,12 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final DepartmentRepository departmentRepository;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository,
+                               DepartmentRepository departmentRepository) {
         this.employeeRepository = employeeRepository;
+        this.departmentRepository = departmentRepository;
     }
 
     @Override
@@ -39,6 +45,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         Employee employee = EmployeeMapper.toEntity(employeeRequestDTO);
+
+        Department department = departmentRepository.findById(employeeRequestDTO.getDepartmentId())
+                .orElseThrow(() ->
+                        new DepartmentNotFoundException(
+                                "Department not found with id: " + employeeRequestDTO.getDepartmentId()));
+
+        employee.setDepartment(department);
 
         Employee savedEmployee = employeeRepository.save(employee);
 
@@ -96,6 +109,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new DuplicateResourceException("Phone number already exists.");
         }
 
+        Department department = departmentRepository.findById(employeeRequestDTO.getDepartmentId())
+                .orElseThrow(() ->
+                        new DepartmentNotFoundException(
+                                "Department not found with id: " + employeeRequestDTO.getDepartmentId()));
+
         existingEmployee.setEmployeeCode(employeeRequestDTO.getEmployeeCode());
         existingEmployee.setFirstName(employeeRequestDTO.getFirstName());
         existingEmployee.setLastName(employeeRequestDTO.getLastName());
@@ -104,7 +122,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         existingEmployee.setGender(employeeRequestDTO.getGender());
         existingEmployee.setJoiningDate(employeeRequestDTO.getJoiningDate());
         existingEmployee.setEmploymentStatus(employeeRequestDTO.getEmploymentStatus());
-        existingEmployee.setDepartment(employeeRequestDTO.getDepartment());
+        existingEmployee.setDepartment(department);
 
         Employee updatedEmployee = employeeRepository.save(existingEmployee);
 

@@ -1,12 +1,11 @@
 package com.govind.worksphere.entity;
 
+import com.govind.worksphere.entity.enums.EmploymentStatus;
+import com.govind.worksphere.entity.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-
-import com.govind.worksphere.entity.enums.Gender;
-import com.govind.worksphere.entity.enums.EmploymentStatus;
 
 @Getter
 @Setter
@@ -45,7 +44,8 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private EmploymentStatus employmentStatus;
 
-    @Column(nullable = false)
-    private String department;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
 
 }
