@@ -72,4 +72,11 @@ public class EmployeeController {
 
         return "Employee deleted successfully.";
     }
+
+    @GetMapping("/search")
+    public List<EmployeeResponseDTO> searchEmployees(
+            @RequestParam String keyword) {
+
+        return employeeService.searchEmployees(keyword);
+    }
 }

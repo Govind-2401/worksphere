@@ -91,4 +91,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employeeRepository.delete(employee);
     }
+
+    @Override
+    public List<EmployeeResponseDTO> searchEmployees(String keyword) {
+
+        return employeeRepository
+                .findByEmployeeCodeContainingIgnoreCaseOrFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase(
+                        keyword,
+                        keyword,
+                        keyword,
+                        keyword
+                )
+                .stream()
+                .map(EmployeeMapper::toResponseDTO)
+                .toList();
+    }
 }

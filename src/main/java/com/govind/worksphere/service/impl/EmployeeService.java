@@ -22,4 +22,6 @@ public interface EmployeeService {
     EmployeeResponseDTO updateEmployee(Long id, EmployeeRequestDTO employeeRequestDTO);
 
     void deleteEmployee(Long id);
+
+    List<EmployeeResponseDTO> searchEmployees(String keyword);
 }
