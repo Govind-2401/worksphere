@@ -39,6 +39,17 @@ public class GlobalExceptionHandler {
         return error;
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(DepartmentNotFoundException.class)
+    public Map<String, String> handleDepartmentNotFound(
+            DepartmentNotFoundException ex) {
+
+        Map<String, String> error = new HashMap<>();
+        error.put("message", ex.getMessage());
+
+        return error;
+    }
+
     // Handle Duplicate Resource (409)
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(DuplicateResourceException.class)
