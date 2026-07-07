@@ -3,15 +3,13 @@ package com.govind.worksphere.service.impl;
 import com.govind.worksphere.dto.EmployeeRequestDTO;
 import com.govind.worksphere.dto.EmployeeResponseDTO;
 import com.govind.worksphere.entity.Employee;
+import com.govind.worksphere.exception.DuplicateResourceException;
 import com.govind.worksphere.exception.EmployeeNotFoundException;
 import com.govind.worksphere.mapper.EmployeeMapper;
 import com.govind.worksphere.repository.EmployeeRepository;
 import com.govind.worksphere.service.EmployeeService;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -26,6 +24,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponseDTO saveEmployee(EmployeeRequestDTO employeeRequestDTO) {
+
+        // Duplicate Validation
+        if (employeeRepository.existsByEmployeeCode(employeeRequestDTO.getEmployeeCode())) {
+            throw new DuplicateResourceException("Employee Code already exists.");
+        }
+
+        if (employeeRepository.existsByEmail(employeeRequestDTO.getEmail())) {
+            throw new DuplicateResourceException("Email already exists.");
+        }
+
+        if (employeeRepository.existsByPhone(employeeRequestDTO.getPhone())) {
+            throw new DuplicateResourceException("Phone number already exists.");
+        }
 
         Employee employee = EmployeeMapper.toEntity(employeeRequestDTO);
 
@@ -67,6 +78,23 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee existingEmployee = employeeRepository.findById(id)
                 .orElseThrow(() ->
                         new EmployeeNotFoundException("Employee not found with id: " + id));
+
+        // Duplicate Validation (Ignore Current Employee)
+
+        if (!existingEmployee.getEmployeeCode().equals(employeeRequestDTO.getEmployeeCode())
+                && employeeRepository.existsByEmployeeCode(employeeRequestDTO.getEmployeeCode())) {
+            throw new DuplicateResourceException("Employee Code already exists.");
+        }
+
+        if (!existingEmployee.getEmail().equals(employeeRequestDTO.getEmail())
+                && employeeRepository.existsByEmail(employeeRequestDTO.getEmail())) {
+            throw new DuplicateResourceException("Email already exists.");
+        }
+
+        if (!existingEmployee.getPhone().equals(employeeRequestDTO.getPhone())
+                && employeeRepository.existsByPhone(employeeRequestDTO.getPhone())) {
+            throw new DuplicateResourceException("Phone number already exists.");
+        }
 
         existingEmployee.setEmployeeCode(employeeRequestDTO.getEmployeeCode());
         existingEmployee.setFirstName(employeeRequestDTO.getFirstName());
