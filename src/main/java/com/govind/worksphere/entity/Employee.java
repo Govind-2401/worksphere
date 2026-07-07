@@ -45,4 +45,7 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private EmploymentStatus employmentStatus;
 
+    @Column(nullable = false)
+    private String department;
+
 }

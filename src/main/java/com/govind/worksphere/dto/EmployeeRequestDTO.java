@@ -44,4 +44,7 @@ public class EmployeeRequestDTO {
 
     @NotNull(message = "Employment status is required")
     private EmploymentStatus employmentStatus;
+
+    @NotBlank(message = "Department is required")
+    private String department;
 }

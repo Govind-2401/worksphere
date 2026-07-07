@@ -30,4 +30,6 @@ public class EmployeeResponseDTO {
     private LocalDate joiningDate;
 
     private EmploymentStatus employmentStatus;
+
+    private String department;
 }

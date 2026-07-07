@@ -76,6 +76,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         existingEmployee.setGender(employeeRequestDTO.getGender());
         existingEmployee.setJoiningDate(employeeRequestDTO.getJoiningDate());
         existingEmployee.setEmploymentStatus(employeeRequestDTO.getEmploymentStatus());
+        existingEmployee.setDepartment(employeeRequestDTO.getDepartment());
 
         Employee updatedEmployee = employeeRepository.save(existingEmployee);
 

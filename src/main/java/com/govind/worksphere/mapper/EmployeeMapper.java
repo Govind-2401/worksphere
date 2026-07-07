@@ -6,6 +6,7 @@ import com.govind.worksphere.entity.Employee;
 
 public class EmployeeMapper {
 
+    // Convert RequestDTO -> Entity
     public static Employee toEntity(EmployeeRequestDTO dto) {
 
         Employee employee = new Employee();
@@ -18,10 +19,12 @@ public class EmployeeMapper {
         employee.setGender(dto.getGender());
         employee.setJoiningDate(dto.getJoiningDate());
         employee.setEmploymentStatus(dto.getEmploymentStatus());
+        employee.setDepartment(dto.getDepartment());
 
         return employee;
     }
 
+    // Convert Entity -> ResponseDTO
     public static EmployeeResponseDTO toResponseDTO(Employee employee) {
 
         return EmployeeResponseDTO.builder()
@@ -34,6 +37,7 @@ public class EmployeeMapper {
                 .gender(employee.getGender())
                 .joiningDate(employee.getJoiningDate())
                 .employmentStatus(employee.getEmploymentStatus())
+                .department(employee.getDepartment())
                 .build();
     }
 }
