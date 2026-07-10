@@ -1,22 +1,24 @@
 package com.govind.worksphere.exception;
 
+import com.govind.worksphere.dto.common.ErrorResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.security.authentication.BadCredentialsException;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Handle Validation Errors (400)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    // Validation Errors (400)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(
+    public ResponseEntity<ErrorResponse> handleValidationException(
             MethodArgumentNotValidException ex) {
 
         Map<String, String> errors = new HashMap<>();
@@ -25,76 +27,105 @@ public class GlobalExceptionHandler {
                 errors.put(error.getField(), error.getDefaultMessage())
         );
 
-        return errors;
+        ErrorResponse response = ErrorResponse.builder()
+                .success(false)
+                .message("Validation failed")
+                .errors(errors)
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        return ResponseEntity.badRequest().body(response);
     }
 
-    // Handle Employee Not Found (404)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    // Employee Not Found (404)
     @ExceptionHandler(EmployeeNotFoundException.class)
-    public Map<String, String> handleEmployeeNotFound(
+    public ResponseEntity<ErrorResponse> handleEmployeeNotFound(
             EmployeeNotFoundException ex) {
 
-        Map<String, String> error = new HashMap<>();
-        error.put("message", ex.getMessage());
+        ErrorResponse response = ErrorResponse.builder()
+                .success(false)
+                .message(ex.getMessage())
+                .errors(null)
+                .timestamp(LocalDateTime.now())
+                .build();
 
-        return error;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    // Department Not Found (404)
     @ExceptionHandler(DepartmentNotFoundException.class)
-    public Map<String, String> handleDepartmentNotFound(
+    public ResponseEntity<ErrorResponse> handleDepartmentNotFound(
             DepartmentNotFoundException ex) {
 
-        Map<String, String> error = new HashMap<>();
-        error.put("message", ex.getMessage());
+        ErrorResponse response = ErrorResponse.builder()
+                .success(false)
+                .message(ex.getMessage())
+                .errors(null)
+                .timestamp(LocalDateTime.now())
+                .build();
 
-        return error;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
-    // Handle Duplicate Resource (409)
-    @ResponseStatus(HttpStatus.CONFLICT)
+    // Duplicate Resource (409)
     @ExceptionHandler(DuplicateResourceException.class)
-    public Map<String, String> handleDuplicateResource(
+    public ResponseEntity<ErrorResponse> handleDuplicateResource(
             DuplicateResourceException ex) {
 
-        Map<String, String> error = new HashMap<>();
-        error.put("message", ex.getMessage());
+        ErrorResponse response = ErrorResponse.builder()
+                .success(false)
+                .message(ex.getMessage())
+                .errors(null)
+                .timestamp(LocalDateTime.now())
+                .build();
 
-        return error;
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
-    // Handle Invalid Login (401)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    // Invalid Login (401)
     @ExceptionHandler(BadCredentialsException.class)
-    public Map<String, String> handleBadCredentials(
+    public ResponseEntity<ErrorResponse> handleBadCredentials(
             BadCredentialsException ex) {
 
-        Map<String, String> error = new HashMap<>();
-        error.put("message", "Invalid email or password.");
+        ErrorResponse response = ErrorResponse.builder()
+                .success(false)
+                .message("Invalid email or password.")
+                .errors(null)
+                .timestamp(LocalDateTime.now())
+                .build();
 
-        return error;
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
-    // Handle Access Denied (403)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
-    public Map<String, String> handleAccessDenied(
-            org.springframework.security.access.AccessDeniedException ex) {
+    // Access Denied (403)
+    @ExceptionHandler({
+            org.springframework.security.access.AccessDeniedException.class,
+            AuthorizationDeniedException.class
+    })
+    public ResponseEntity<ErrorResponse> handleAccessDenied(Exception ex) {
 
-        Map<String, String> error = new HashMap<>();
-        error.put("message", "Access Denied");
+        ErrorResponse response = ErrorResponse.builder()
+                .success(false)
+                .message("Access denied.")
+                .errors(null)
+                .timestamp(LocalDateTime.now())
+                .build();
 
-        return error;
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 
-    // Handle Unexpected Exceptions (500)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    // Generic Exception (500)
     @ExceptionHandler(Exception.class)
-    public Map<String, String> handleGenericException(Exception ex) {
+    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
 
-        Map<String, String> error = new HashMap<>();
-        error.put("message", "Something went wrong. Please try again later.");
+        ErrorResponse response = ErrorResponse.builder()
+                .success(false)
+                .message("Something went wrong. Please try again later.")
+                .errors(null)
+                .timestamp(LocalDateTime.now())
+                .build();
 
-        return error;
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(response);
     }
 }
