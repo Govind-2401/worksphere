@@ -6,6 +6,7 @@ import com.govind.worksphere.service.DepartmentService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class DepartmentController {
     // Create Department
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public DepartmentResponseDTO saveDepartment(
             @Valid @RequestBody DepartmentRequestDTO departmentRequestDTO) {
 
@@ -31,6 +33,7 @@ public class DepartmentController {
 
     // Get All Departments
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
     public Page<DepartmentResponseDTO> getAllDepartments(
 
             @RequestParam(defaultValue = "0") int page,
@@ -43,6 +46,7 @@ public class DepartmentController {
 
     // Get Department By Id
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
     public DepartmentResponseDTO getDepartmentById(@PathVariable Long id) {
 
         return departmentService.getDepartmentById(id);
@@ -50,6 +54,7 @@ public class DepartmentController {
 
     // Update Department
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public DepartmentResponseDTO updateDepartment(
             @PathVariable Long id,
             @Valid @RequestBody DepartmentRequestDTO departmentRequestDTO) {
@@ -60,13 +65,15 @@ public class DepartmentController {
     // Delete Department
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteDepartment(@PathVariable Long id) {
 
         departmentService.deleteDepartment(id);
     }
 
-    // Search Department
+    // Search Departments
     @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
     public List<DepartmentResponseDTO> searchDepartments(
             @RequestParam String keyword) {
 

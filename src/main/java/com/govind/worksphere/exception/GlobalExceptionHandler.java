@@ -75,6 +75,18 @@ public class GlobalExceptionHandler {
         return error;
     }
 
+    // Handle Access Denied (403)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public Map<String, String> handleAccessDenied(
+            org.springframework.security.access.AccessDeniedException ex) {
+
+        Map<String, String> error = new HashMap<>();
+        error.put("message", "Access Denied");
+
+        return error;
+    }
+
     // Handle Unexpected Exceptions (500)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)

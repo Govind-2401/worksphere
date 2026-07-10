@@ -3,9 +3,10 @@ package com.govind.worksphere.controller;
 import com.govind.worksphere.dto.EmployeeRequestDTO;
 import com.govind.worksphere.dto.EmployeeResponseDTO;
 import com.govind.worksphere.service.EmployeeService;
-import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class EmployeeController {
 
     // Create Employee
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','HR')")
     public EmployeeResponseDTO saveEmployee(
             @Valid @RequestBody EmployeeRequestDTO employeeRequestDTO) {
 
@@ -29,6 +31,7 @@ public class EmployeeController {
 
     // Get All Employees
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
     public Page<EmployeeResponseDTO> getAllEmployees(
 
             @RequestParam(defaultValue = "0") int page,
@@ -50,6 +53,7 @@ public class EmployeeController {
 
     // Get Employee By ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
     public EmployeeResponseDTO getEmployeeById(@PathVariable Long id) {
 
         return employeeService.getEmployeeById(id);
@@ -57,6 +61,7 @@ public class EmployeeController {
 
     // Update Employee
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','HR')")
     public EmployeeResponseDTO updateEmployee(
             @PathVariable Long id,
             @Valid @RequestBody EmployeeRequestDTO employeeRequestDTO) {
@@ -66,6 +71,7 @@ public class EmployeeController {
 
     // Delete Employee
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteEmployee(@PathVariable Long id) {
 
         employeeService.deleteEmployee(id);
@@ -73,7 +79,9 @@ public class EmployeeController {
         return "Employee deleted successfully.";
     }
 
+    // Search Employees
     @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
     public List<EmployeeResponseDTO> searchEmployees(
             @RequestParam String keyword) {
 

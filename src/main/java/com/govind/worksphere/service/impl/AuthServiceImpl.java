@@ -10,6 +10,8 @@ import com.govind.worksphere.security.JwtService;
 import com.govind.worksphere.service.AuthService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +22,19 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserDetailsService userDetailsService;
 
     public AuthServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
                            JwtService jwtService,
-                           AuthenticationManager authenticationManager) {
+                           AuthenticationManager authenticationManager,
+                           UserDetailsService userDetailsService) {
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -63,11 +68,18 @@ public class AuthServiceImpl implements AuthService {
                 )
         );
 
+        // Fetch User
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String token = jwtService.generateToken(user.getEmail());
+        // Load UserDetails
+        UserDetails userDetails =
+                userDetailsService.loadUserByUsername(user.getEmail());
 
+        // Generate JWT Token (Email + Role)
+        String token = jwtService.generateToken(userDetails);
+
+        // Return Response
         return LoginResponseDTO.builder()
                 .token(token)
                 .email(user.getEmail())
