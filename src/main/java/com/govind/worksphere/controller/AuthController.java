@@ -7,7 +7,13 @@ import com.govind.worksphere.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(
+        name = "Authentication",
+        description = "Register & Login APIs"
+)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -19,6 +25,7 @@ public class AuthController {
     }
 
     // Register API
+    @Operation(summary = "Register a new user")
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public String register(@Valid @RequestBody RegisterRequestDTO request) {
@@ -27,6 +34,7 @@ public class AuthController {
     }
 
     // Login API
+    @Operation(summary = "Login and generate JWT token")
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public LoginResponseDTO login(

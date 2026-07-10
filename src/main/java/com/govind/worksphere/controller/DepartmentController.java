@@ -10,7 +10,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(
+        name = "Department Management",
+        description = "Department CRUD APIs"
+)
 @RestController
 @RequestMapping("/api/departments")
 public class DepartmentController {
@@ -22,6 +28,7 @@ public class DepartmentController {
     }
 
     // Create Department
+    @Operation(summary = "Create a new department")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
@@ -32,6 +39,7 @@ public class DepartmentController {
     }
 
     // Get All Departments
+    @Operation(summary = "Get all departments")
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
     public Page<DepartmentResponseDTO> getAllDepartments(
@@ -45,6 +53,7 @@ public class DepartmentController {
     }
 
     // Get Department By Id
+    @Operation(summary = "Get department by ID")
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
     public DepartmentResponseDTO getDepartmentById(@PathVariable Long id) {
@@ -53,6 +62,7 @@ public class DepartmentController {
     }
 
     // Update Department
+    @Operation(summary = "Update department")
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public DepartmentResponseDTO updateDepartment(
@@ -63,6 +73,7 @@ public class DepartmentController {
     }
 
     // Delete Department
+    @Operation(summary = "Delete department")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
@@ -72,6 +83,7 @@ public class DepartmentController {
     }
 
     // Search Departments
+    @Operation(summary = "Search departments")
     @GetMapping("/search")
     @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
     public List<DepartmentResponseDTO> searchDepartments(

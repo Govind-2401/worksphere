@@ -9,7 +9,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(
+        name = "Employee Management",
+        description = "Employee CRUD APIs"
+)
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
@@ -21,6 +27,7 @@ public class EmployeeController {
     }
 
     // Create Employee
+    @Operation(summary = "Create a new employee")
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN','HR')")
     public EmployeeResponseDTO saveEmployee(
@@ -30,6 +37,7 @@ public class EmployeeController {
     }
 
     // Get All Employees
+    @Operation(summary = "Get all employees")
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
     public Page<EmployeeResponseDTO> getAllEmployees(
@@ -52,6 +60,7 @@ public class EmployeeController {
     }
 
     // Get Employee By ID
+    @Operation(summary = "Get employee by ID")
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
     public EmployeeResponseDTO getEmployeeById(@PathVariable Long id) {
@@ -60,6 +69,7 @@ public class EmployeeController {
     }
 
     // Update Employee
+    @Operation(summary = "Update employee")
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','HR')")
     public EmployeeResponseDTO updateEmployee(
@@ -70,6 +80,7 @@ public class EmployeeController {
     }
 
     // Delete Employee
+    @Operation(summary = "Delete employee")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String deleteEmployee(@PathVariable Long id) {
@@ -80,6 +91,7 @@ public class EmployeeController {
     }
 
     // Search Employees
+    @Operation(summary = "Search employees")
     @GetMapping("/search")
     @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
     public List<EmployeeResponseDTO> searchEmployees(
