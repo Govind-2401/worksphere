@@ -1,6 +1,7 @@
 package com.govind.worksphere.entity;
 
 import com.govind.worksphere.entity.enums.Role;
+import com.govind.worksphere.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import lombok.*;
 @Builder
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -2,6 +2,7 @@ package com.govind.worksphere.entity;
 
 import com.govind.worksphere.entity.enums.EmploymentStatus;
 import com.govind.worksphere.entity.enums.Gender;
+import com.govind.worksphere.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "employees")
-public class Employee {
+public class Employee extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

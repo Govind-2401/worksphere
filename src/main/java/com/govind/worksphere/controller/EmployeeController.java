@@ -2,15 +2,19 @@ package com.govind.worksphere.controller;
 
 import com.govind.worksphere.dto.EmployeeRequestDTO;
 import com.govind.worksphere.dto.EmployeeResponseDTO;
+import com.govind.worksphere.dto.common.ApiResponse;
 import com.govind.worksphere.service.EmployeeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(
         name = "Employee Management",
@@ -30,73 +34,129 @@ public class EmployeeController {
     @Operation(summary = "Create a new employee")
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN','HR')")
-    public EmployeeResponseDTO saveEmployee(
+    public ResponseEntity<ApiResponse<EmployeeResponseDTO>> saveEmployee(
             @Valid @RequestBody EmployeeRequestDTO employeeRequestDTO) {
 
-        return employeeService.saveEmployee(employeeRequestDTO);
+        EmployeeResponseDTO employee =
+                employeeService.saveEmployee(employeeRequestDTO);
+
+        ApiResponse<EmployeeResponseDTO> response =
+                ApiResponse.<EmployeeResponseDTO>builder()
+                        .success(true)
+                        .message("Employee created successfully.")
+                        .data(employee)
+                        .timestamp(LocalDateTime.now())
+                        .build();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     // Get All Employees
     @Operation(summary = "Get all employees")
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
-    public Page<EmployeeResponseDTO> getAllEmployees(
+    public ResponseEntity<ApiResponse<Page<EmployeeResponseDTO>>> getAllEmployees(
 
             @RequestParam(defaultValue = "0") int page,
-
             @RequestParam(defaultValue = "5") int size,
-
             @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir) {
 
-            @RequestParam(defaultValue = "asc") String sortDir
-    ) {
+        Page<EmployeeResponseDTO> employees =
+                employeeService.getAllEmployees(page, size, sortBy, sortDir);
 
-        return employeeService.getAllEmployees(
-                page,
-                size,
-                sortBy,
-                sortDir
-        );
+        ApiResponse<Page<EmployeeResponseDTO>> response =
+                ApiResponse.<Page<EmployeeResponseDTO>>builder()
+                        .success(true)
+                        .message("Employees fetched successfully.")
+                        .data(employees)
+                        .timestamp(LocalDateTime.now())
+                        .build();
+
+        return ResponseEntity.ok(response);
     }
 
     // Get Employee By ID
     @Operation(summary = "Get employee by ID")
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
-    public EmployeeResponseDTO getEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<EmployeeResponseDTO>> getEmployeeById(
+            @PathVariable Long id) {
 
-        return employeeService.getEmployeeById(id);
+        EmployeeResponseDTO employee =
+                employeeService.getEmployeeById(id);
+
+        ApiResponse<EmployeeResponseDTO> response =
+                ApiResponse.<EmployeeResponseDTO>builder()
+                        .success(true)
+                        .message("Employee fetched successfully.")
+                        .data(employee)
+                        .timestamp(LocalDateTime.now())
+                        .build();
+
+        return ResponseEntity.ok(response);
     }
 
     // Update Employee
     @Operation(summary = "Update employee")
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','HR')")
-    public EmployeeResponseDTO updateEmployee(
+    public ResponseEntity<ApiResponse<EmployeeResponseDTO>> updateEmployee(
             @PathVariable Long id,
             @Valid @RequestBody EmployeeRequestDTO employeeRequestDTO) {
 
-        return employeeService.updateEmployee(id, employeeRequestDTO);
+        EmployeeResponseDTO employee =
+                employeeService.updateEmployee(id, employeeRequestDTO);
+
+        ApiResponse<EmployeeResponseDTO> response =
+                ApiResponse.<EmployeeResponseDTO>builder()
+                        .success(true)
+                        .message("Employee updated successfully.")
+                        .data(employee)
+                        .timestamp(LocalDateTime.now())
+                        .build();
+
+        return ResponseEntity.ok(response);
     }
 
     // Delete Employee
     @Operation(summary = "Delete employee")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public String deleteEmployee(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteEmployee(
+            @PathVariable Long id) {
 
         employeeService.deleteEmployee(id);
 
-        return "Employee deleted successfully.";
+        ApiResponse<Void> response =
+                ApiResponse.<Void>builder()
+                        .success(true)
+                        .message("Employee deleted successfully.")
+                        .data(null)
+                        .timestamp(LocalDateTime.now())
+                        .build();
+
+        return ResponseEntity.ok(response);
     }
 
     // Search Employees
     @Operation(summary = "Search employees")
     @GetMapping("/search")
     @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
-    public List<EmployeeResponseDTO> searchEmployees(
+    public ResponseEntity<ApiResponse<List<EmployeeResponseDTO>>> searchEmployees(
             @RequestParam String keyword) {
 
-        return employeeService.searchEmployees(keyword);
+        List<EmployeeResponseDTO> employees =
+                employeeService.searchEmployees(keyword);
+
+        ApiResponse<List<EmployeeResponseDTO>> response =
+                ApiResponse.<List<EmployeeResponseDTO>>builder()
+                        .success(true)
+                        .message("Employees fetched successfully.")
+                        .data(employees)
+                        .timestamp(LocalDateTime.now())
+                        .build();
+
+        return ResponseEntity.ok(response);
     }
 }

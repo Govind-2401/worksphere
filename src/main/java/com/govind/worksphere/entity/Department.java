@@ -2,7 +2,7 @@ package com.govind.worksphere.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import com.govind.worksphere.entity.base.BaseEntity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "departments")
-public class Department {
+public class Department extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

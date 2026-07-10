@@ -3,12 +3,16 @@ package com.govind.worksphere.controller;
 import com.govind.worksphere.dto.LoginRequestDTO;
 import com.govind.worksphere.dto.LoginResponseDTO;
 import com.govind.worksphere.dto.RegisterRequestDTO;
+import com.govind.worksphere.dto.common.ApiResponse;
 import com.govind.worksphere.service.AuthService;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @Tag(
         name = "Authentication",
@@ -27,19 +31,37 @@ public class AuthController {
     // Register API
     @Operation(summary = "Register a new user")
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public String register(@Valid @RequestBody RegisterRequestDTO request) {
+    public ResponseEntity<ApiResponse<Void>> register(
+            @Valid @RequestBody RegisterRequestDTO request) {
 
-        return authService.register(request);
+        authService.register(request);
+
+        ApiResponse<Void> response = ApiResponse.<Void>builder()
+                .success(true)
+                .message("User registered successfully.")
+                .data(null)
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     // Login API
     @Operation(summary = "Login and generate JWT token")
     @PostMapping("/login")
-    @ResponseStatus(HttpStatus.OK)
-    public LoginResponseDTO login(
+    public ResponseEntity<ApiResponse<LoginResponseDTO>> login(
             @Valid @RequestBody LoginRequestDTO request) {
 
-        return authService.login(request);
+        LoginResponseDTO loginResponse = authService.login(request);
+
+        ApiResponse<LoginResponseDTO> response =
+                ApiResponse.<LoginResponseDTO>builder()
+                        .success(true)
+                        .message("Login successful.")
+                        .data(loginResponse)
+                        .timestamp(LocalDateTime.now())
+                        .build();
+
+        return ResponseEntity.ok(response);
     }
 }
