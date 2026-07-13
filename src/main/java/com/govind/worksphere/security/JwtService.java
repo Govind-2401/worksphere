@@ -26,7 +26,6 @@ public class JwtService {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-    // Generate JWT with Role
     public String generateToken(UserDetails userDetails) {
 
         Map<String, Object> claims = new HashMap<>();
@@ -57,20 +56,17 @@ public class JwtService {
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-
         return extractUsername(token).equals(userDetails.getUsername())
                 && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
-
         return extractAllClaims(token)
                 .getExpiration()
                 .before(new Date());
     }
 
     private Claims extractAllClaims(String token) {
-
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()

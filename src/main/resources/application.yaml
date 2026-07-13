@@ -22,3 +22,14 @@ server:
 jwt:
   secret: GovindWorksphereJwtSecretKey2026GovindWorksphere12345
   expiration: 86400000
+
+logging:
+  level:
+    root: INFO
+    com.govind.worksphere: INFO
+    org.springframework.security: WARN
+    org.hibernate.SQL: INFO
+    org.hibernate.orm.jdbc.bind: TRACE
+
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%level] %logger{36} - %msg%n"

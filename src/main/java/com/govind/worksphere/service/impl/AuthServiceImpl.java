@@ -8,15 +8,21 @@ import com.govind.worksphere.exception.DuplicateResourceException;
 import com.govind.worksphere.repository.UserRepository;
 import com.govind.worksphere.security.JwtService;
 import com.govind.worksphere.service.AuthService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl implements AuthService {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(AuthServiceImpl.class);
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -40,8 +46,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String register(RegisterRequestDTO request) {
 
-        // Duplicate Email Validation
+        logger.info("Registration request received for email: {}", request.getEmail());
+
         if (userRepository.existsByEmail(request.getEmail())) {
+
+            logger.warn("Registration failed. Email already exists: {}", request.getEmail());
+
             throw new DuplicateResourceException("Email already exists.");
         }
 
@@ -54,13 +64,17 @@ public class AuthServiceImpl implements AuthService {
 
         userRepository.save(user);
 
+        logger.info("User registered successfully with email: {}", user.getEmail());
+
         return "User registered successfully.";
     }
 
     @Override
     public LoginResponseDTO login(LoginRequestDTO request) {
 
-        // Authenticate User
+        logger.info("Login attempt for email: {}", request.getEmail());
+
+        // Authenticate user
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -68,18 +82,22 @@ public class AuthServiceImpl implements AuthService {
                 )
         );
 
-        // Fetch User
+        // Fetch user from database
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> {
+                    logger.error("User not found with email: {}", request.getEmail());
+                    return new UsernameNotFoundException("User not found.");
+                });
 
         // Load UserDetails
         UserDetails userDetails =
                 userDetailsService.loadUserByUsername(user.getEmail());
 
-        // Generate JWT Token (Email + Role)
+        // Generate JWT Token
         String token = jwtService.generateToken(userDetails);
 
-        // Return Response
+        logger.info("User logged in successfully: {}", user.getEmail());
+
         return LoginResponseDTO.builder()
                 .token(token)
                 .email(user.getEmail())
