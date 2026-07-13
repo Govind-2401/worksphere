@@ -36,6 +36,10 @@ public class EmployeeMapper {
                 .gender(employee.getGender())
                 .joiningDate(employee.getJoiningDate())
                 .employmentStatus(employee.getEmploymentStatus())
+
+                .profileImage(employee.getProfileImage())
+                .resumeFile(employee.getResumeFile())
+
                 .departmentId(
                         employee.getDepartment() != null
                                 ? employee.getDepartment().getId()

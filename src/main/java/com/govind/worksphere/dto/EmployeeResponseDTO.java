@@ -34,4 +34,8 @@ public class EmployeeResponseDTO {
     private Long departmentId;
 
     private String departmentName;
+
+    private String profileImage;
+
+    private String resumeFile;
 }

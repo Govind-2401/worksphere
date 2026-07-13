@@ -12,9 +12,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.MediaType;
+import com.govind.worksphere.service.FileStorageService;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 @Tag(
         name = "Employee Management",
@@ -25,9 +31,13 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+    private final FileStorageService fileStorageService;
 
-    public EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService,
+                              FileStorageService fileStorageService) {
+
         this.employeeService = employeeService;
+        this.fileStorageService = fileStorageService;
     }
 
     // Create Employee
@@ -158,5 +168,57 @@ public class EmployeeController {
                         .build();
 
         return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "Upload employee profile image")
+    @PostMapping(
+            value = "/{id}/upload/profile-image",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    @PreAuthorize("hasAnyRole('ADMIN','HR')")
+    public String uploadProfileImage(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file) {
+
+        return fileStorageService.uploadProfileImage(id, file);
+    }
+
+    @Operation(summary = "Upload employee resume")
+    @PostMapping(
+            value = "/{id}/upload/resume",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    @PreAuthorize("hasAnyRole('ADMIN','HR')")
+    public String uploadResume(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file) {
+
+        return fileStorageService.uploadResume(id, file);
+    }
+
+    @Operation(summary = "View employee profile image")
+    @GetMapping("/{id}/profile-image")
+    @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
+    public ResponseEntity<Resource> viewProfileImage(@PathVariable Long id) {
+
+        Resource resource = fileStorageService.downloadProfileImage(id);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(resource);
+    }
+
+    @Operation(summary = "Download employee resume")
+    @GetMapping("/{id}/resume")
+    @PreAuthorize("hasAnyRole('ADMIN','HR','EMPLOYEE')")
+    public ResponseEntity<Resource> downloadResume(@PathVariable Long id) {
+
+        Resource resource = fileStorageService.downloadResume(id);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"resume.pdf\"")
+                .body(resource);
     }
 }
