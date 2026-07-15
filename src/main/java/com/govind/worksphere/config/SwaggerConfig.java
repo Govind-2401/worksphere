@@ -7,8 +7,11 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
@@ -20,6 +23,12 @@ public class SwaggerConfig {
 
         return new OpenAPI()
 
+                .servers(List.of(
+                        new Server()
+                                .url("https://worksphere-production-59a1.up.railway.app")
+                                .description("Production Server")
+                ))
+
                 .info(new Info()
                         .title("WorkSphere API")
                         .description("Employee Management System REST API with JWT Authentication")
@@ -27,8 +36,7 @@ public class SwaggerConfig {
                         .contact(new Contact()
                                 .name("Govind Kumar")
                                 .email("govindkumar.gpj@gmail.com")
-                                .url("www.https://github.com/Govind-2401")
-                                .url("www.linkedin.com/in/govind-kumar-486555368"))
+                                .url("https://github.com/Govind-2401"))
                         .license(new License()
                                 .name("Apache 2.0")))
 
