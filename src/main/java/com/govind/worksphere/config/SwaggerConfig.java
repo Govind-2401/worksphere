@@ -25,6 +25,10 @@ public class SwaggerConfig {
 
                 .servers(List.of(
                         new Server()
+                                .url("http://localhost:8080")
+                                .description("Local Development"),
+
+                        new Server()
                                 .url("https://worksphere-production-59a1.up.railway.app")
                                 .description("Production Server")
                 ))
