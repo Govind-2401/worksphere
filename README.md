@@ -19,3 +19,35 @@ WorkSphere HRMS is a RESTful backend application that helps organizations manage
 - 🐳 Docker Support
 - ☁️ Railway Deployment
 - 📖 Swagger/OpenAPI Documentation
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| Language | Java 21 |
+| Framework | Spring Boot 3.5 |
+| Security | Spring Security + JWT |
+| Database | MySQL 8 |
+| ORM | Spring Data JPA (Hibernate) |
+| Build Tool | Maven |
+| API Testing | Postman |
+| API Documentation | Swagger / OpenAPI |
+| Containerization | Docker |
+| Cloud Deployment | Railway |
+| Version Control | Git & GitHub |
+
+## 📂 Project Structure
+
+```text
+worksphere
+├── src
+│   ├── main
+│   │   ├── java
+│   │   └── resources
+│   └── test
+├── uploads
+├── screenshots
+├── Dockerfile
+├── pom.xml
+└── README.md
+```
