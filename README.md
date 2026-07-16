@@ -2,6 +2,13 @@
 
 A production-ready Employee Management System built using **Spring Boot**, **Spring Security (JWT)**, **MySQL**, **Docker**, and **Railway**.
 
+![Java](https://img.shields.io/badge/Java-21-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5-green)
+![MySQL](https://img.shields.io/badge/MySQL-8-blue)
+![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED)
+![Railway](https://img.shields.io/badge/Deployment-Railway-purple)
+![License](https://img.shields.io/badge/License-Apache%202.0-blue)
+
 ## 📌 Overview
 
 WorkSphere HRMS is a RESTful backend application that helps organizations manage employees and departments securely. It provides JWT-based authentication, role-based authorization, CRUD operations, search, pagination, sorting, file upload support, Docker containerization, and cloud deployment.
@@ -166,3 +173,24 @@ mvn spring-boot:run
 ```bash
 docker compose up --build
 ```
+
+## 🚀 Future Enhancements
+
+- Email Notification
+- Attendance Management
+- Payroll Module
+- Leave Management
+- Performance Analytics
+- Unit Testing
+- CI/CD Pipeline
+
+## 👨‍💻 Author
+
+**Govind Kumar**
+
+- GitHub: https://github.com/Govind-2401
+- LinkedIn: https://www.linkedin.com/in/govind-kumar-486555368
+
+## 📄 License
+
+This project is licensed under the Apache 2.0 License.
