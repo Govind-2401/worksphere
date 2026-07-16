@@ -1,5 +1,9 @@
 # 🚀 WorkSphere HRMS
 
+<p align="center">
+  <img src="screenshots/banner.png" alt="WorkSphere HRMS Banner" width="100%">
+</p>
+
 A production-ready Employee Management System built using **Spring Boot**, **Spring Security (JWT)**, **MySQL**, **Docker**, and **Railway**.
 
 ![Java](https://img.shields.io/badge/Java-21-orange)
@@ -81,6 +85,124 @@ worksphere
                            ▼
                   Docker & Railway Deployment
 ```
+
+# 📷 Project Screenshots
+
+## 🌐 Swagger UI
+
+![Swagger UI](screenshots/api/swagger-home.png)
+
+---
+
+## 🔐 Authentication APIs
+
+![Authentication APIs](screenshots/api/authentication-apis.png)
+
+### User Registration
+
+![Register](screenshots/api/register-success.png)
+
+### User Login (JWT)
+
+![Login](screenshots/api/login-jwt.png)
+
+---
+
+## 👥 Employee Management
+
+![Employee APIs](screenshots/api/employee-apis.png)
+
+### Create Employee
+
+![Create Employee](screenshots/api/create-employee.png)
+
+### Get Employees
+
+![Get Employees](screenshots/api/get-employees.png)
+
+---
+
+## 🏢 Department Management
+
+![Department APIs](screenshots/api/department-apis.png)
+
+### Create Department
+
+![Create Department](screenshots/api/create-department.png)
+
+---
+
+## 📊 Dashboard APIs
+
+![Dashboard APIs](screenshots/api/dashboard-apis.png)
+
+### Dashboard Summary
+
+![Dashboard Summary](screenshots/api/dashboard-summary.png)
+
+---
+
+## ☁️ Railway Deployment
+
+### Railway Dashboard
+
+![Railway Dashboard](screenshots/deployment/railway-dashboard.png)
+
+### Successful Deployment
+
+![Railway Deployment](screenshots/deployment/railway-deployment.png)
+
+### Railway Variables
+
+![Railway Variables](screenshots/deployment/railway-variables.png)
+
+### Live Swagger
+
+![Swagger Live](screenshots/deployment/swagger-live.png)
+
+---
+
+## 🐳 Docker
+
+### Docker Desktop
+
+![Docker Desktop](screenshots/deployment/docker-containers.png)
+
+### Running Containers
+
+![Docker PS](screenshots/deployment/docker-ps.png)
+
+---
+
+## 🗄 Database
+
+### Database Tables
+
+![Database Tables](screenshots/database/mysql-tables.png)
+
+### Users Table
+
+![Users](screenshots/database/users-table.png)
+
+### Employees Table
+
+![Employees](screenshots/database/employees-table.png)
+
+### Departments Table
+
+![Departments](screenshots/database/departments-table.png)
+
+---
+
+## 📁 Project Structure
+
+### Project Structure
+
+![Project Structure](screenshots/project/project-structure.png)
+
+### Package Structure
+
+![Package Structure](screenshots/project/package-structure.png)
 
 ## 🌐 Live Deployment
 
@@ -187,6 +309,8 @@ docker compose up --build
 ## 👨‍💻 Author
 
 **Govind Kumar**
+
+Backend Developer | Java | Spring Boot | MySQL | Docker
 
 - GitHub: https://github.com/Govind-2401
 - LinkedIn: https://www.linkedin.com/in/govind-kumar-486555368
