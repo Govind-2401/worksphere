@@ -206,10 +206,10 @@ worksphere
 
 ## 🌐 Live Deployment
 
-| Service | Link |
-|---------|------|
-| 🚀 Live API | https://worksphere-production-59a1.up.railway.app |
-| 📘 Swagger UI | https://worksphere-production-59a1.up.railway.app/swagger-ui/index.html |
+| Service         | Link |
+|-----------------|------|
+| 🌐 API Base URL | https://worksphere-production-59a1.up.railway.app |
+| 📘 Swagger UI   | https://worksphere-production-59a1.up.railway.app/swagger-ui/index.html |
 | 📄 OpenAPI Docs | https://worksphere-production-59a1.up.railway.app/v3/api-docs |
 
 ## 📡 REST API Endpoints
