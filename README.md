@@ -51,3 +51,34 @@ worksphere
 ├── pom.xml
 └── README.md
 ```
+
+## 🏗️ Architecture
+
+```text
+                Client (Postman / Swagger UI)
+                           │
+                           ▼
+                    Spring Boot REST API
+                           │
+        ┌──────────────────┼──────────────────┐
+        ▼                  ▼                  ▼
+ Authentication      Employee Module    Department Module
+   (JWT)                  │                  │
+        └──────────────────┼──────────────────┘
+                           ▼
+                  Spring Data JPA (Hibernate)
+                           │
+                           ▼
+                        MySQL Database
+                           │
+                           ▼
+                  Docker & Railway Deployment
+```
+
+## 🌐 Live Deployment
+
+| Service | Link |
+|---------|------|
+| 🚀 Live API | https://worksphere-production-59a1.up.railway.app |
+| 📘 Swagger UI | https://worksphere-production-59a1.up.railway.app/swagger-ui/index.html |
+| 📄 OpenAPI Docs | https://worksphere-production-59a1.up.railway.app/v3/api-docs |
