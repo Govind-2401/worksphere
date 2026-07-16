@@ -82,3 +82,87 @@ worksphere
 | 🚀 Live API | https://worksphere-production-59a1.up.railway.app |
 | 📘 Swagger UI | https://worksphere-production-59a1.up.railway.app/swagger-ui/index.html |
 | 📄 OpenAPI Docs | https://worksphere-production-59a1.up.railway.app/v3/api-docs |
+
+## 📡 REST API Endpoints
+
+### 🔐 Authentication
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register a new user |
+| POST | `/api/auth/login` | Login and generate JWT token |
+
+---
+
+### 👥 Employee Management
+
+| Method | Endpoint | Description          |
+|--------|----------|----------------------|
+| POST | `/api/employees` | Create employee      |
+| GET | `/api/employees` | Get all employees    |
+| GET | `/api/employees/{id}` | Get employee by ID   |
+| PUT | `/api/employees/{id}` | Update employee      |
+| DELETE | `/api/employees/{id}` | Delete employee      |
+| GET | `/api/employees/search` | Search employees     |
+| POST | `/api/employees/{id}/upload-profile-image` | Upload profile image |
+| GET | `/api/employees/{id}/profile-image` | View profile image   |
+| POST | `/api/employees/{id}/upload-resume` | Upload resume        |
+| GET | `/api/employees/{id}/download-resume` | Download resume      |
+| GET | `/api/employees?page=0&size=5&sortBy=firstName&sortDir=asc` | Pagination & Sorting |
+
+---
+
+### 🏢 Department Management
+
+| Method | Endpoint                  | Description          |
+|--------|---------------------------|----------------------|
+| POST | `/api/departments`        | Create department    |
+| GET | `/api/departments`        | Get all departments  |
+| GET | `/api/departments/{id}`   | Get department by ID |
+| PUT | `/api/departments/{id}`   | Update department    |
+| GET | `/api/departments/search` | Search departments   |
+| DELETE | `/api/departments/{id}`   | Delete department    |
+
+---
+
+### 📊 Dashboard
+
+| Method | Endpoint                                 | Description                 |
+|--------|------------------------------------------|-----------------------------|
+| GET    | `/api/dashboard/summary`                 | Dashboard summary           |
+| GET    | `/api/dashboard/employees-by-department` | Employee count by department |
+| GET    | `/api/dashboard/gender-distribution`     | Gender statistics           |
+| GET    | `/api/dashboard/recent-employees`        | Recently joined employees   |
+| GET    | `/api/dashboard/employment-status`       | Employment status statistics |
+
+## 🚀 Getting Started
+
+### Clone Repository
+
+```bash
+git clone https://github.com/Govind-2401/worksphere.git
+cd worksphere
+```
+
+### Configure Database
+
+Update the following properties in `application.properties`:
+
+```properties
+spring.datasource.url=YOUR_DATABASE_URL
+spring.datasource.username=YOUR_USERNAME
+spring.datasource.password=YOUR_PASSWORD
+```
+
+### Run the Project
+
+```bash
+mvn clean install
+mvn spring-boot:run
+```
+
+### Run using Docker
+
+```bash
+docker compose up --build
+```
